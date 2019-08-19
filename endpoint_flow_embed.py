@@ -22,6 +22,7 @@ def api_graph():
 
 
 def build_graph_from_data():
+    # graph of all possible connections gleaned from data
     data = [
         'ABC',
         'ABE',
@@ -42,6 +43,13 @@ def build_graph_from_data():
                 if next_c not in d[c]:
                     d[c].append(datum[i+1])
                     d[c] = sorted(d[c])
-    print(d)
+    return d
 
-build_graph_from_data()
+def is_allowed(d, src, dst):
+    return (src in d.keys() and dst in d[src])
+
+
+
+d = build_graph_from_data()
+assert(is_allowed(d, 'A', 'B'))
+assert(not is_allowed(d, 'A', 'T'))
