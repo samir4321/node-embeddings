@@ -1,4 +1,7 @@
 # tree_embed.py
+
+import random
+
 d1 = {'A': {'B': {'C': None, 'D': None}}}
 d2 = {'A': {'B': {'C': None, 'E': None}}}
 d3 = {'A': {'Q': {'C': None, 'D': None}}}
@@ -9,7 +12,13 @@ def random_walk(d, node, nsteps):
      perform a random walk on the given tree (treated as a graph)
      of n steps, beginning from the given node
     """
-    pass
+    adj_list = tree_to_adjlist(d)
+    walk = []
+    for i in range(nsteps):
+        node = random.choice(list(adj_list[node]))
+        walk.append(node)
+    return walk
+
 
 def get_node(d, node):
     for c in d.keys():
@@ -47,4 +56,3 @@ def tree_to_adjlist(d):
         adj_list[b].add(a)
     return adj_list
 
-print(tree_to_adjlist(d1))
