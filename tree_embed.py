@@ -7,28 +7,6 @@ d2 = {'A': {'B': {'C': None, 'E': None}}}
 d3 = {'A': {'Q': {'C': None, 'D': None}}}
 
 
-def random_walk(d, node, nsteps):
-    """
-     perform a random walk on the given tree (treated as a graph)
-     of n steps, beginning from the given node
-
-     use for deep walk (likely will have problems in tree structure, gives weird
-     walks)
-    """
-    adj_list = tree_to_adjlist(d)
-    walk = []
-    for i in range(nsteps):
-        node = random.choice(list(adj_list[node]))
-        walk.append(node)
-    return walk
-
-
-def get_node(d, node):
-    for c in d.keys():
-        if c == node:
-            pass
-
-
 def tree_to_pairs(d, current=None):
     pairs = []
     if d is None:
