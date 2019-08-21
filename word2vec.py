@@ -85,7 +85,7 @@ def save_model(cbow):
 
 def run_similarity():
     w2v = gensim.models.KeyedVectors.load_word2vec_format('./vectors.txt', binary=False)
-    for word, sim_score in w2v.most_similar(positive=['quiet']):
+    for word, sim_score in w2v.most_similar(positive=['alice']):
         print(f'word: {word} similarity score: {sim_score}')
 
 def main():
