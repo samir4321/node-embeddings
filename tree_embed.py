@@ -11,6 +11,9 @@ def random_walk(d, node, nsteps):
     """
      perform a random walk on the given tree (treated as a graph)
      of n steps, beginning from the given node
+
+     use for deep walk (likely will have problems in tree structure, gives weird
+     walks)
     """
     adj_list = tree_to_adjlist(d)
     walk = []
