@@ -6,9 +6,12 @@
  random walk probabilities, but for the time being will
  assume all equal.
 """
-DEFAULT_WALK_LENGTH = -1 # number of random walks to be generated from a given node
-P = -1  # return hyperparameter
-Q = -1  # inout hyperparameter
+import numpy as np
+import random
+
+DEFAULT_WALK_LENGTH = 20  # number of random walks to be generated from a given node
+P = 1.0  # return hyperparameter
+Q = 1.0  # inout hyperparameter
 
 
 def sample_graphs():
@@ -17,11 +20,17 @@ def sample_graphs():
     d3 = {'A': {'Q': {'C': None, 'D': None}}}
     return [d1, d2, d3]
 
+
 def transition_probs(tree, p, q):
     """
     build normalized transition probabilities
     P(t, v, x) = normalized probability of x as next node, given
     current node is v and previous node was t
+
+    :param p: 1/p = unnormalized probability of return to previous node
+    :param q: 1 / q = unnormalized probability of random exploration of neighbor node of distance 2 or greater from
+    previous node
+        1 is unnormalized probability of transition to node of distance 1 from previous node
     """
     adj_list = tree_to_adjlist(tree)
     print(f'adjacency list: {adj_list}')
@@ -44,17 +53,27 @@ def transition_probs(tree, p, q):
     return tr_probs
 
 
-def generate_random_walk_data(graphs, walk_length, p, q):
-    """
-    :param graphs:
-    :param walk_length:
-    :param p: 1/p = unnormalized probability of return to previous node
-    :param q: 1 / q = unnormalized probability of random exploration of neighbor node of distance 2 or greater from
-    previous node
-        1 is unnormalized probability of transition to node of distance 1 from previous node
-    :return:
-    """
-    pass
+def generate_random_walks(tree, p, q, walk_length, nwalks):
+   """
+   :param tree:
+   :param walk_length:
+   :param p:
+   :param q:
+   :return:
+   """
+   tr_probs = transition_probs(tree, p, q)
+   adj_list = tree_to_adjlist(tree)
+   walks = []
+   for nd in adj_list.keys(): # could run in parallel
+    for nw in range(nwalks):
+        walk = [nd, random.choice(list(adj_list[nd]))] # first two nodes in walk
+        for i in range(walk_length - 2): # rest of walk
+            possible_x = list(adj_list[walk[i + 1]])
+            next_transition_probs = [tr_probs[(walk[i], walk[i+1], x)] for x in possible_x]
+            next_node = np.random.choice(possible_x, p=next_transition_probs)
+            walk.append(next_node)
+        walks.append(walk)
+   return walks
 
 
 def build_model():
@@ -92,9 +111,13 @@ def tree_to_adjlist(d):
 
 
 def main():
-    p = 0.25
-    q = 0.25
     samples = sample_graphs()
-    transition_probs(samples[0], p, q)
+    tree = samples[0]
+    tr_probs = transition_probs(tree, P, Q)
+    #print(tr_probs)
+    walks = generate_random_walks(tree, P, Q, DEFAULT_WALK_LENGTH, nwalks=100)
+    for w in walks:
+        print(w)
+
 
 main()
