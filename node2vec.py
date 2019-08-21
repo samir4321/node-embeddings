@@ -17,9 +17,27 @@ def sample_graphs():
     d3 = {'A': {'Q': {'C': None, 'D': None}}}
     return [d1, d2, d3]
 
-def generate_random_walk_data(graphs, walk_length, p, q):
 
+def transition_probs():
+    """
+    build normalized transition probabilities
+    P(t, v, x) = normalized probability of x as next node, given
+    current node is v and previous node was t
+    """
     pass
+
+def generate_random_walk_data(graphs, walk_length, p, q):
+    """
+    :param graphs:
+    :param walk_length:
+    :param p: 1/p = unnormalized probability of return to previous node
+    :param q: 1 / q = unnormalized probability of random exploration of neighbor node of distance 2 or greater from
+    previous node
+        1 is unnormalized probability of transition to node of distance 1 from previous node
+    :return:
+    """
+    pass
+
 
 def build_model():
     pass
