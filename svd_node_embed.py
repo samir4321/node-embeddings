@@ -4,16 +4,18 @@
  from random walk
 """
 import numpy as np
+import time
 
 DEFAULT_WALK_LENGTH = 20  # length random walks to be generated from a given node
 P = 1.0  # return hyperparameter
 Q = 0.5  # 1.0 inout hyperparameter
 
+
 def sample_graphs():
     d1 = {'A': {'B': {'C': None, 'D': {"E": None, "F": None}}}}
-    #d2 = {'A': {'B': {'C': None, 'D': None}}}
     d3 = {'A': {'Q': {'C': None, 'D': None}}}
-    return [d1] * 100 + [d3] * 5#[d1] * 100 + [d3] * 1
+    samples = [d1] * 1000 + [d3] * 500
+    return samples
 
 
 def svd_node_embed(trees, embed_dim):
@@ -133,9 +135,16 @@ def tree_to_pairs(d, current=None):
 
 def main():
     trees = sample_graphs()
+    start = time.time()
     embedding = svd_node_embed(trees, 2)
+    end = time.time()
     np.set_printoptions(precision=3, suppress=True)
+    print("-" * 20)
+    print(f'ran node svd on {len(trees)} trees in {(end - start):.2f} seconds')
+    print('-' * 20)
     for node, v in embedding.items():
         print(f'node: {node} embedding: {v}')
 
-main()
+if __name__ == "__main__":
+    main()
+
