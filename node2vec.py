@@ -21,7 +21,6 @@ import gensim
 import tree_utils
 
 
-
 DEFAULT_WALK_LENGTH = 20  # length random walks to be generated from a given node
 P = 1.0  # return hyperparameter
 Q = 0.5 #1.0  # inout hyperparameter

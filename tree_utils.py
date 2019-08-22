@@ -58,6 +58,7 @@ def generate_random_walks(tree, p, q, walk_length, nwalks):
         walks.append(''.join(walk))
    return walks
 
+
 def generate_training_data(node_set, random_walks, window_size, input_dim, batch_size):
     # TODO(add negative sampling)
     maxlen = window_size * 2
