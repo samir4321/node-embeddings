@@ -1,23 +1,5 @@
-# tree_lsh.py
-"""
- (non) locally-sensitive hashing of tree structures
-
-    A
-    |
-    B
-   / \
-  C   D
-"""
+# tree_hash
 import hashlib
-
-d1 = {'A': {'B': {'C': None, 'D': None}}}
-d2 = {'A': {'B': {'C': None, 'E': None}}}
-d3 = {'A': {'Q': {'C': None, 'D': None}}}
-
-
-def build_merkle_tree(d):
-    pass
-
 
 def get_hash(d):
     """
@@ -37,7 +19,7 @@ def get_hash(d):
     return hashlib.sha256(concat_hash.encode('utf-8')).hexdigest()
 
 
-print(get_hash(d1))
+
 
 
 
