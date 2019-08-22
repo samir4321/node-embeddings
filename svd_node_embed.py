@@ -12,8 +12,9 @@ Q = 0.5  # 1.0 inout hyperparameter
 def sample_graphs():
     d1 = {'A': {'B': {'C': None, 'D': {"E": None, "F": None}}}}
     #d2 = {'A': {'B': {'C': None, 'D': None}}}
-    #d3 = {'A': {'Q': {'C': None, 'D': None}}}
-    return [d1] * 100#[d1] * 100 + [d3] * 1
+    d3 = {'A': {'Q': {'C': None, 'D': None}}}
+    return [d1] * 100 + [d3] * 5#[d1] * 100 + [d3] * 1
+
 
 def svd_node_embed(trees, embed_dim):
     all_walks = []
