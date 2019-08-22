@@ -11,6 +11,7 @@ from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.preprocessing.text import Tokenizer
 import gensim
 
+
 path = get_file('alice.txt', origin='http://www.gutenberg.org/files/11/11-0.txt')
 full_corpus = open(path).readlines()
 n_samples = len(full_corpus)#300
@@ -27,10 +28,17 @@ window_size = 3
 batch_size = 10
 nepochs = 100
 n_iters = int(nepochs * n_samples / batch_size)
-save_freq = 5#
+save_freq = 5
+
+def shuffle_together(arr1, arr2):
+    assert (len(arr1) == len(arr2))
+    p = np.random.permutation(len(arr1))
+    return arr1[p], arr2[p]
 
 def generate_data(corpus, window_size, V):
+    # TODO(add negative sampling)
     maxlen = window_size * 2
+    np.random.shuffle(corpus)
     for words in corpus:
         L = len(words)
         xb, yb = [], []
@@ -52,7 +60,7 @@ def generate_data(corpus, window_size, V):
                 yb = np.array(yb).reshape((batch_size, V))
                 yield xb, yb
                 xb, yb = [], []
-            #yield (x, y)
+
 
 def build_model():
     cbow = Sequential()
@@ -74,6 +82,7 @@ def train_model(cbow):
             save_model(cbow)
             print('saving model ...')
 
+
 def save_model(cbow):
     f = open('vectors.txt' ,'w')
     f.write('{} {}\n'.format(V - 1, embedding_dim))
@@ -83,15 +92,19 @@ def save_model(cbow):
         f.write('{} {}\n'.format(word, str_vec))
     f.close()
 
+
 def run_similarity():
     w2v = gensim.models.KeyedVectors.load_word2vec_format('./vectors.txt', binary=False)
-    for word, sim_score in w2v.most_similar(positive=['alice']):
+    for word, sim_score in w2v.most_similar(positive=['rabbit']):
         print(f'word: {word} similarity score: {sim_score}')
 
+
 def main():
-   #cbow = build_model()
-   #train_model(cbow)
-   #save_model(cbow)
-    run_similarity()
+   cbow = build_model()
+   train_model(cbow)
+   save_model(cbow)
+   # run_similarity()
 
 main()
+
+
