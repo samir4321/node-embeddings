@@ -1,8 +1,9 @@
 # tree_utils.py
 import numpy as np
+import hashlib
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing import sequence
-
+import json
 
 def transition_probs(tree, p, q):
     """
@@ -121,4 +122,28 @@ def tree_to_adjlist(d):
             adj_list[b] = set()
         adj_list[b].add(a)
     return adj_list
+
+
+def get_hash(d):
+    return hashlib.sha256(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
+    # """
+    # A simple tree hash defined as the merkle tree root
+    # use case: given a new incoming tree (trace), determine if/statistics
+    # of how much it has been seen before
+    # """
+    # node_hashes = []
+    # for key in d.keys():
+    #     node = d[key]
+    #     if node is None:
+    #         hashv = hashlib.sha256(key.encode('utf-8')).hexdigest()
+    #         return hashv
+    #     node_hash = get_hash(node)
+    #     node_hashes.append(node_hash)
+    # concat_hash = ''.join(node_hashes)
+    # return hashlib.sha256(concat_hash.encode('utf-8')).hexdigest()
+    #
+    #
+
+
+
 

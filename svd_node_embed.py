@@ -15,16 +15,20 @@ Q = 0.5  # 1.0 inout hyperparameter
 
 def sample_graphs():
     d1 = {'A': {'B': {'C': None, 'D': {"E": None, "F": None}}}}
-    d3 = {'A': {'Q': {'C': None, 'D': None}}}
-    samples = [d1] * 1000 + [d3] * 500
+    d2 = {'A': {'Q': {'C': None, 'D': {"E": None, "F": None}}}}
+    samples = [d1, d2]
     return samples
 
 
-def svd_node_embed(trees, embed_dim):
-    all_walks = []
+def svd_node_embed(trees, embed_dim, nwalks=1000):
+    tree_hashes = {}
     for tree in trees:
+        tree_hashes[tree_utils.get_hash(tree)] = tree
+    unique_trees = tree_hashes.values()
+    all_walks = []
+    for tree in unique_trees:
         walks = tree_utils.generate_random_walks(tree, P, Q, DEFAULT_WALK_LENGTH,
-                                      nwalks=2)
+                                      nwalks=nwalks)
         all_walks += walks
     np.random.shuffle(all_walks)
 
